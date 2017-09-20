@@ -31,27 +31,33 @@ jsonDatos = json.loads(file)
 tam=len(jsonDatos)
 nota=[]
 eventos=[]
-#eventos a eliminar
-evenDelete=['drawback','advantage']
-
-#recorro la lista buscando drawback y advantage con la lista que me he creado arriba y elimino. PREGUNTAR MIGUEL
-
+#eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
+evenDelete=['question5', 'question6','drawback','advantage']
+#en events almaceno todos los eventos que no esten en la lista evenDelente
+#events=[value for value in jsonDatos if not value['event'] in evenDelete]
+#enumerate enumera los datos que se le pasan
 for index,value in enumerate(jsonDatos):
-	print index,value
+	#hago un if para comprobar que los eventos no estan en la lista de elementos que tengo que eliminar por no ser numericos
+	if not value['event'] in evenDelete:
+		question=value['event']
+		selection=value['properties']['selection']
+		nota.append(int(selection))
+		component=value['properties']['component']
+		print component
+		version=value['properties']['version']
+		print version
+		user=value['properties']['user']
 	
-	# events=x['event']
-	# #convert unicode to str
+	
+	
+
+
+
+
+
+	#HAGO IF COMPROBANDO SI EL EVENT ESTA DENTRO DE EVENTDELETE. AQUI LOS HE BORRADO. HAGO MEDIA DE LOS SELECTIONS (MAP REDUCE)
+	#ELSE DE MOMENTO NO HAGO NADA. ANALISIS DE TEXTO (MINERIA DE DATOS)
+	
+	#convert unicode to str
 	# events=unicodedata.normalize('NFKD', events).encode('ascii','ignore')
-	# eventos.append(events)
-	# #elimino las dos ultimas preguntas ya que no son valores numericos
-	# even=eventos[:-2]
-	# selection=x['properties']['selection']
-	# print selection
-	# #nota.append(int(selection))
-	# component=x['properties']['component']
-	# #print component
-	# version=x['properties']['version']
-	# #print version
-	# user=x['properties']['user']
-	# #print user
-	# #print "--------------------------------------------------------------------"
+	
