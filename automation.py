@@ -41,14 +41,36 @@ for index,value in enumerate(jsonDatos):
 	if not value['event'] in evenDelete:
 		question=value['event']
 		selection=value['properties']['selection']
-		nota.append(int(selection))
+		#nota.append(int(selection))
 		component=value['properties']['component']
-		print component
-		version=value['properties']['version']
-		print version
+		version_comp=value['properties']['version']
 		user=value['properties']['user']
+		estructura_datos(component,version,question,selection,user)
 	
-	
+#crear estructura de datos con los componentes en formato:
+#componente_version_pregunta: nota, usuario
+estructura = {}
+
+def estructura_datos(componente,version,pregunta,nota,usuario):
+	dato = componente + "_" + version + "_" + pregunta
+
+
+
+	#-----------------------------------------------------#
+  
+  #comprobar que la estructura no tiene ese dato. Si lo tiene se almacena donde estaba y sino se crea
+  if not structura.has(dato):
+    structura[dato] = []
+
+  structura[dato].append( { nota: nota, usuario: usuario } )
+
+
+
+#copiar en un fichero la estructura de datos
+file = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
+file.write('This is a test') 
+
+file.close()
 	
 
 
