@@ -13,63 +13,62 @@ import json
 import unicodedata
 
 
+#eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
+evenDelete=['question5', 'question6','drawback','advantage']
+
+#crear estructura de datos con los componentes en formato:
+#componente_version_pregunta: nota, usuario
+estructura = {}
+
+def estructura_datos(componente,version,pregunta,nota,usuario):
+	key = str(componente + "_" + version + "_" + pregunta)
+	#comprobar que la estructura no tiene ese dato. Si lo tiene se almacena donde estaba (el valor) y sino se crea
+  	if not key in estructura:
+  		estructura[key] = []
+
+	value= {"nota": nota, "usuario":usuario}
+	estructura[key].append(value)
+
+#me guardo los campos que me interesan: event, selection, component, version, user
+def parse_file(file):
+	jsonDatos = json.loads(file)
+	for rate in jsonDatos:
+		#hago un if para comprobar que los eventos no estan en la lista de elementos que tengo que eliminar por no ser numericos
+		if not rate['event'] in evenDelete:
+			question=rate['event']
+			selection=rate['properties']['selection']
+			component=rate['properties']['component']
+			version_comp=rate['properties']['version']
+			user=rate['properties']['user']
+			estructura_datos(component,version_comp,question,selection,user)
+		
 path = '/home/sandra/script_mixpanel/log/*.txt'
 # glob.glob(path) encuentra todas las ocurrencias que se le pasen en el path 
 files = glob.glob(path)   
 for name in files:
     try:
         with open(name) as f: 
-            #file=sys.stdout.write(f.read())
             file=f.read()
+            parse_file(file)
     except IOError as exc:
         if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
             raise 
 
-#me guardo los campos que me interesan: event, selection, component, version, user
-
-jsonDatos = json.loads(file)
-tam=len(jsonDatos)
-nota=[]
-eventos=[]
-#eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
-evenDelete=['question5', 'question6','drawback','advantage']
-#en events almaceno todos los eventos que no esten en la lista evenDelente
-#events=[value for value in jsonDatos if not value['event'] in evenDelete]
-#enumerate enumera los datos que se le pasan
-for index,value in enumerate(jsonDatos):
-	#hago un if para comprobar que los eventos no estan en la lista de elementos que tengo que eliminar por no ser numericos
-	if not value['event'] in evenDelete:
-		question=value['event']
-		selection=value['properties']['selection']
-		#nota.append(int(selection))
-		component=value['properties']['component']
-		version_comp=value['properties']['version']
-		user=value['properties']['user']
-		estructura_datos(component,version,question,selection,user)
-	
-#crear estructura de datos con los componentes en formato:
-#componente_version_pregunta: nota, usuario
-estructura = {}
-
-def estructura_datos(componente,version,pregunta,nota,usuario):
-	dato = componente + "_" + version + "_" + pregunta
 
 
 
-	#-----------------------------------------------------#
-  
-  #comprobar que la estructura no tiene ese dato. Si lo tiene se almacena donde estaba y sino se crea
-  if not structura.has(dato):
-    structura[dato] = []
 
-  structura[dato].append( { nota: nota, usuario: usuario } )
+
+
+
+print estructura
+
 
 
 
 #copiar en un fichero la estructura de datos
 file = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
 file.write('This is a test') 
-
 file.close()
 	
 
