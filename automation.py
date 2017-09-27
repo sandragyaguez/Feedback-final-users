@@ -16,9 +16,18 @@ import unicodedata
 #eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
 evenDelete=['question5', 'question6','drawback','advantage']
 
+
 #crear estructura de datos con los componentes en formato:
 #componente_version_pregunta: nota, usuario
 estructura = {}
+
+def sum_selections(estructura):
+	suma=0
+	for clave, valor in estructura.iteritems():
+		for lista_valores in valor:
+			suma+=lista_valores.values()[0]
+	print suma
+
 
 def estructura_datos(componente,version,pregunta,nota,usuario):
 	key = str(componente + "_" + version + "_" + pregunta)
@@ -26,8 +35,9 @@ def estructura_datos(componente,version,pregunta,nota,usuario):
   	if not key in estructura:
   		estructura[key] = []
 
-	value= {"nota": nota, "usuario":usuario}
+	value= {"nota": int(nota), "usuario":str(usuario)}
 	estructura[key].append(value)
+	sum_selections(estructura)
 
 #me guardo los campos que me interesan: event, selection, component, version, user
 def parse_file(file):
@@ -55,14 +65,7 @@ for name in files:
             raise 
 
 
-
-
-
-
-
-
-print estructura
-
+#print estructura
 
 
 
