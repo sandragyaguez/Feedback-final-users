@@ -12,22 +12,21 @@ import errno
 import json
 import unicodedata
 
-
 #eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
 evenDelete=['question5', 'question6','drawback','advantage']
-
 
 #crear estructura de datos con los componentes en formato:
 #componente_version_pregunta: nota, usuario
 estructura = {}
 
 def sum_selections(estructura):
-	suma=0
 	for clave, valor in estructura.iteritems():
+		#declaro aqui la suma para que sean sumas diferentes por cada clave
+		suma=0
 		for lista_valores in valor:
-			suma+=lista_valores.values()[0]
-	print suma
-
+			suma+=lista_valores['nota']
+		media=suma/len(valor)
+		print clave, media
 
 def estructura_datos(componente,version,pregunta,nota,usuario):
 	key = str(componente + "_" + version + "_" + pregunta)
@@ -37,7 +36,7 @@ def estructura_datos(componente,version,pregunta,nota,usuario):
 
 	value= {"nota": int(nota), "usuario":str(usuario)}
 	estructura[key].append(value)
-	sum_selections(estructura)
+	
 
 #me guardo los campos que me interesan: event, selection, component, version, user
 def parse_file(file):
@@ -51,7 +50,7 @@ def parse_file(file):
 			version_comp=rate['properties']['version']
 			user=rate['properties']['user']
 			estructura_datos(component,version_comp,question,selection,user)
-		
+	
 path = '/home/sandra/script_mixpanel/log/*.txt'
 # glob.glob(path) encuentra todas las ocurrencias que se le pasen en el path 
 files = glob.glob(path)   
@@ -64,8 +63,8 @@ for name in files:
         if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
             raise 
 
-
-#print estructura
+print estructura
+sum_selections(estructura)
 
 
 
