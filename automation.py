@@ -19,6 +19,10 @@ evenDelete=['question5', 'question6','drawback','advantage']
 #componente_version_pregunta: nota, usuario
 estructura = {}
 
+#copiar en un fichero la estructura de datos
+final_file = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
+
+
 def sum_selections(estructura):
 	for clave, valor in estructura.iteritems():
 		#declaro aqui la suma para que sean sumas diferentes por cada clave
@@ -27,6 +31,8 @@ def sum_selections(estructura):
 			suma+=lista_valores['nota']
 		media=suma/len(valor)
 		print clave, media
+		final_file.write( 'media de cada clave = ' + str(media) + '\n' )
+	final_file.close()
 
 def estructura_datos(componente,version,pregunta,nota,usuario):
 	key = str(componente + "_" + version + "_" + pregunta)
@@ -68,11 +74,6 @@ sum_selections(estructura)
 
 
 
-#copiar en un fichero la estructura de datos
-file = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
-file.write('This is a test') 
-file.close()
-	
 
 
 

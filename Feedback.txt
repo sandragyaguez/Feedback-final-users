@@ -1,1 +1,4 @@
-This is a test
+media de cada clave = 2
+media de cada clave = 2
+media de cada clave = 3
+media de cada clave = 3
