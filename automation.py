@@ -11,16 +11,34 @@ import glob
 import errno
 import json
 import unicodedata
+import yaml
+import os
+
+#abrir archivo configuracion
+basepath = os.path.dirname(__file__)
+configFile = os.path.abspath(os.path.join(basepath, "config.yaml"))
+with open(configFile, "r") as ymlfile:
+    config = yaml.load(ymlfile)
+
+#poner array vacio sino existe el array de eventos a eliminar
+if not config.has_key('eventsDelete'):
+	config['eventsDelete']=[]
+
+#salir del programa
+if not config.has_key('logFiles') or not config.has_key('output'):
+	print "fichero de configuracion debe contener logFiles y output"
+	sys.exit()
+
 
 #eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
-evenDelete=['question5', 'question6','drawback','advantage']
+#evenDelete=['question5', 'question6','drawback','advantage']
 
 #crear estructura de datos con los componentes en formato:
 #componente_version_pregunta: nota, usuario
 estructura = {}
 
 #copiar en un fichero la estructura de datos
-final_file = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
+#config['output'] = open('/home/sandra/Documentos/Labo/Feedback-final-users/Feedback.txt', 'w')
 
 
 def sum_selections(estructura):
@@ -31,8 +49,8 @@ def sum_selections(estructura):
 			suma+=lista_valores['nota']
 		media=suma/len(valor)
 		print clave, media
-		final_file.write( 'media de cada clave = ' + str(media) + '\n' )
-	final_file.close()
+		config['output'].write( 'media de ' + clave + " = "+ str(media) + '\n' )
+	config['output'].close()
 
 def estructura_datos(componente,version,pregunta,nota,usuario):
 	key = str(componente + "_" + version + "_" + pregunta)
@@ -49,7 +67,7 @@ def parse_file(file):
 	jsonDatos = json.loads(file)
 	for rate in jsonDatos:
 		#hago un if para comprobar que los eventos no estan en la lista de elementos que tengo que eliminar por no ser numericos
-		if not rate['event'] in evenDelete:
+		if not rate['event'] in config['eventsDeleted']:
 			question=rate['event']
 			selection=rate['properties']['selection']
 			component=rate['properties']['component']
@@ -57,9 +75,10 @@ def parse_file(file):
 			user=rate['properties']['user']
 			estructura_datos(component,version_comp,question,selection,user)
 	
-path = '/home/sandra/script_mixpanel/log/*.txt'
-# glob.glob(path) encuentra todas las ocurrencias que se le pasen en el path 
-files = glob.glob(path)   
+#config['logFiles'] = '/home/sandra/script_mixpanel/log/*.txt'
+# glob.glob(config['logFiles']) encuentra todas las ocurrencias que se le pasen en el path 
+
+files = glob.glob(config['logFiles'])   
 for name in files:
     try:
         with open(name) as f: 
@@ -72,16 +91,4 @@ for name in files:
 print estructura
 sum_selections(estructura)
 
-
-
-
-
-
-
-
-	#HAGO IF COMPROBANDO SI EL EVENT ESTA DENTRO DE EVENTDELETE. AQUI LOS HE BORRADO. HAGO MEDIA DE LOS SELECTIONS (MAP REDUCE)
-	#ELSE DE MOMENTO NO HAGO NADA. ANALISIS DE TEXTO (MINERIA DE DATOS)
-	
-	#convert unicode to str
-	# events=unicodedata.normalize('NFKD', events).encode('ascii','ignore')
-	
+#peticiones la base de datos para meter las notas de los usuarios

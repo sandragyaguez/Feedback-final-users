@@ -1,4 +1,4 @@
-media de cada clave = 2
-media de cada clave = 2
-media de cada clave = 3
-media de cada clave = 3
+media de googleplus-timeline_stable_question2 = 2
+media de googleplus-timeline_stable_question3 = 2
+media de twitter-timeline_stable_initialQuestion = 3
+media de googleplus-timeline_stable_question4 = 3

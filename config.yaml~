@@ -1,0 +1,12 @@
+api_secret: cb2011ee8d19c4e6dcf68c1cca1b151a
+endpoint: https://data.mixpanel.com/api
+events:
+  - initialQuestion
+  - advantage
+  - question2
+  - question3
+  - question4
+  - question5
+  - question6
+  - drawback
+path: log
