@@ -13,6 +13,7 @@ import json
 import unicodedata
 import yaml
 import os
+from mongoengine import *
 
 #abrir archivo configuracion
 basepath = os.path.dirname(__file__)
@@ -91,5 +92,11 @@ for name in files:
 
 print estructura
 sum_selections(estructura)
+
+
+#conexion a la base de datos mongo que correo en el host 10.10.1.88 en el puerto 27017
+
+connect('Picbit', host='10.10.1.88', port=27017)
+
 
 #peticiones la base de datos para meter las notas de los usuarios
