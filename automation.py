@@ -30,7 +30,7 @@ if not config.has_key('logFiles') or not config.has_key('output'):
 	sys.exit()
 
 
-#eventos a eliminar por ser no numericos. Se han de tratar de forma diferente. Mineria de datos
+#eventos a eliminar por ser no numericos. Se han de tratar bde forma diferente. Mineria de datos
 #evenDelete=['question5', 'question6','drawback','advantage']
 
 #crear estructura de datos con los componentes en formato:
@@ -42,15 +42,16 @@ estructura = {}
 
 
 def sum_selections(estructura):
-	for clave, valor in estructura.iteritems():
-		#declaro aqui la suma para que sean sumas diferentes por cada clave
-		suma=0
-		for lista_valores in valor:
-			suma+=lista_valores['nota']
-		media=suma/len(valor)
-		print clave, media
-		config['output'].write( 'media de ' + clave + " = "+ str(media) + '\n' )
-	config['output'].close()
+	#tengo que abrir primero el fichero para poder escribir posteriormente sobre el 
+    with open(config['output'],"w") as file: 
+		for clave, valor in estructura.iteritems():
+			#declaro aqui la suma para que sean sumas diferentes por cada clave
+			suma=0
+			for lista_valores in valor:
+				suma+=lista_valores['nota']
+			media=suma/len(valor)
+			print clave, media
+			file.write( 'media de ' + clave + " = "+ str(media) + '\n' )
 
 def estructura_datos(componente,version,pregunta,nota,usuario):
 	key = str(componente + "_" + version + "_" + pregunta)
