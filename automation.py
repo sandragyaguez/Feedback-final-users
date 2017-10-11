@@ -30,6 +30,10 @@ if not config.has_key('logFiles') or not config.has_key('output'):
 	print "fichero de configuracion debe contener logFiles y output"
 	sys.exit()
 
+if not config.has_key('DB') or not config.has_key('host') or not config.has_key('port') or not config.has_key('username') or not config.has_key('password'):
+	print "datos insuficientes para la conexion a la base de datos"
+	sys.exit()
+
 
 #eventos a eliminar por ser no numericos. Se han de tratar bde forma diferente. Mineria de datos
 #evenDelete=['question5', 'question6','drawback','advantage']
@@ -94,9 +98,9 @@ print estructura
 sum_selections(estructura)
 
 
-#conexion a la base de datos mongo que correo en el host 10.10.1.88 en el puerto 27017
-
-connect('Picbit', host='10.10.1.88', port=27017)
+#conexion a la base de datos mongo
+connect(config['DB'], host=config['host'], port=config['port'])
+connect(config['DB'], username=config['username'], password=config['password'])
 
 
 #peticiones la base de datos para meter las notas de los usuarios
